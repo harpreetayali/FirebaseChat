@@ -1,4 +1,4 @@
-package com.example.firebasechat.Notifications;
+package com.example.firebasechat.Retrofit;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

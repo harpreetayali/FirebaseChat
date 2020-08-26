@@ -1,4 +1,4 @@
-package com.example.firebasechat.Notifications;
+package com.example.firebasechat.Models;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;
@@ -6,29 +6,33 @@ import com.google.gson.annotations.SerializedName;
 
 public class MyResponse {
 
-    @SerializedName("multicast_id")
-    @Expose
-    private Integer multicastId;
+//    @SerializedName("multicast_id")
+//    @Expose
+//    private Long multicastId;
+
     @SerializedName("success")
     @Expose
     private Integer success;
+
     @SerializedName("failure")
     @Expose
     private Integer failure;
+
     @SerializedName("canonical_ids")
     @Expose
     private Integer canonicalIds;
+
     @SerializedName("results")
     @Expose
     private List<Result> results = null;
 
-    public Integer getMulticastId() {
-        return multicastId;
-    }
-
-    public void setMulticastId(Integer multicastId) {
-        this.multicastId = multicastId;
-    }
+//    public Long getMulticastId() {
+//        return multicastId;
+//    }
+//
+//    public void setMulticastId(Long multicastId) {
+//        this.multicastId = multicastId;
+//    }
 
     public Integer getSuccess() {
         return success;

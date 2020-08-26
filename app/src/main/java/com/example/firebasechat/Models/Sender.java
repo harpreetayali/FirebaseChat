@@ -1,5 +1,6 @@
-package com.example.firebasechat.Notifications;
+package com.example.firebasechat.Models;
 
+import com.example.firebasechat.Models.Data;
 import com.google.gson.annotations.SerializedName;
 
 public class Sender {
@@ -12,9 +13,9 @@ public class Sender {
     @SerializedName("notification")
     private Data data;
 
-    public Sender(Data data, String token) {
-        this.data = data;
+    public Sender(String token,Data data) {
         this.token = token;
+        this.data = data;
     }
 
     public Data getData() {

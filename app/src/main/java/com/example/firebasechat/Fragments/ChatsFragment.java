@@ -5,7 +5,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -13,10 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.firebasechat.Adapters.UserAdapter;
-import com.example.firebasechat.Models.Chat;
 import com.example.firebasechat.Models.ChatList;
 import com.example.firebasechat.Models.User;
-import com.example.firebasechat.Notifications.Token;
+import com.example.firebasechat.Models.Token;
 import com.example.firebasechat.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

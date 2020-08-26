@@ -2,6 +2,7 @@ package com.example.firebasechat.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHolder>
@@ -119,8 +121,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHolder>
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+            public void onDataChange(@NonNull DataSnapshot snapshot)
+            {
+                int unread = 0;
                 for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     Chat chat = snapshot1.getValue(Chat.class);
 
@@ -128,6 +131,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHolder>
                             chat.getReceiver().equals(userId) && chat.getSender().equals(firebaseUser.getUid())) {
                             theLastMessage = chat.getMessage();
                     }
+                    if (chat.getReceiver().equals(firebaseUser.getUid()) && !chat.isIsseen()) {
+                        unread++;
+                    }
+
                 }
                 switch (theLastMessage) {
 
@@ -135,7 +142,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHolder>
                         last_msg.setText("");
                         break;
                     default:
-                        last_msg.setText(theLastMessage);
+                        if (unread == 0 ) {
+                            last_msg.setText(theLastMessage);
+                            last_msg.setTextColor(ContextCompat.getColor(mCtx, R.color.colorDarkGrey));
+                        } else {
+                            last_msg.setText(theLastMessage);
+                            last_msg.setTypeface(Typeface.DEFAULT_BOLD);
+                            last_msg.setTextColor(ContextCompat.getColor(mCtx, R.color.colorPrimaryDark));
+                        }
                         break;
                 }
 

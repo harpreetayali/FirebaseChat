@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,6 +13,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.firebasechat.Adapters.UserAdapter;
 import com.example.firebasechat.Adapters.ViewPagerAdapter;
 import com.example.firebasechat.Fragments.ChatsFragment;
 import com.example.firebasechat.Fragments.ProfileFragment;
@@ -46,10 +48,18 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         profile_image = findViewById(R.id.profile_image);
         username = findViewById(R.id.username_title);
+
+
+        final ProgressDialog progressDoalog;
+        progressDoalog = new ProgressDialog(MainActivity.this);
+        progressDoalog.setMax(100);
+        progressDoalog.setMessage("Loading...");
+        progressDoalog.setProgressStyle(ProgressDialog.BUTTON_NEGATIVE);
+        // show it
+        progressDoalog.show();
 
         setImageAndUsername();
 
@@ -75,12 +85,14 @@ public class MainActivity extends AppCompatActivity {
                     viewPagerAdapter.addFragments(new ChatsFragment(), "Chats");
                 } else {
                     viewPagerAdapter.addFragments(new ChatsFragment(), "("+unread+")Chats");
+
                 }
                 viewPagerAdapter.addFragments(new UsersFragment(),"Users");
                 viewPagerAdapter.addFragments(new ProfileFragment(),"Profile");
 
                 viewPager.setAdapter(viewPagerAdapter);
                 tabLayout.setupWithViewPager(viewPager);
+                progressDoalog.dismiss();
             }
 
             @Override

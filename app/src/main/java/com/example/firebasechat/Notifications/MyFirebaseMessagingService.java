@@ -22,8 +22,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
-public class MyFirebaseMessagingService extends FirebaseMessagingService
-{
+public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
@@ -31,17 +30,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService
 
         String sented = remoteMessage.getData().get("sented");
         String user = remoteMessage.getData().get("user");
-        Log.i("remoteMsg", sented);
-        SharedPreferences preferences = getSharedPreferences("PREFS",MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences("PREFS", MODE_PRIVATE);
         String currentUser = preferences.getString("currentUser", "none");
-
+        Log.i("sented", sented+user+"j");
 
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        if (firebaseUser != null && sented.equals(firebaseUser.getUid()))
-        {
-            if (!currentUser.equals(user))
-            {
+        if (firebaseUser != null && sented.equals(firebaseUser.getUid())) {
+            if (!currentUser.equals(user)) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     sendOreoNotification(remoteMessage);
                 } else {
@@ -52,31 +48,30 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService
         }
     }
 
-    private void sendOreoNotification(RemoteMessage remoteMessage)
-    {
+    private void sendOreoNotification(RemoteMessage remoteMessage) {
         String user = remoteMessage.getData().get("user");
         String icon = remoteMessage.getData().get("icon");
         String title = remoteMessage.getData().get("title");
         String body = remoteMessage.getData().get("body");
 
         RemoteMessage.Notification notification = remoteMessage.getNotification();
-        int j = Integer.parseInt(user.replaceAll("[\\D]",""));
+        int j = Integer.parseInt(user.replaceAll("[\\D]", ""));
         Intent intent = new Intent(this, MessageActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("userid", user);
         intent.putExtras(bundle);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,j,intent,PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, j, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         Uri defauldSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         OreoNotification oreoNotification = new OreoNotification(this);
-        NotificationCompat.Builder builder = oreoNotification.getOreoNotification(title,body,pendingIntent,defauldSound,icon);
+        NotificationCompat.Builder builder = oreoNotification.getOreoNotification(title, body, pendingIntent, defauldSound, icon);
 
         int i = 0;
         if (j > 0) {
             i = j;
         }
-        oreoNotification.getManager().notify(i,builder.build());
+        oreoNotification.getManager().notify(i, builder.build());
 
     }
 
@@ -89,13 +84,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService
 
 //        RemoteMessage.Notification notification = remoteMessage.getNotification();
 
-        int j = Integer.parseInt(user.replaceAll("[\\D]",""));
+        int j = Integer.parseInt(user.replaceAll("[\\D]", ""));
         Intent intent = new Intent(this, MessageActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("userid", user);
         intent.putExtras(bundle);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,j,intent,PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, j, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Uri defauldSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
@@ -111,7 +106,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService
         if (j > 0) {
             i = j;
         }
-        noti.notify(i,builder.build());
+        noti.notify(i, builder.build());
 
 
     }

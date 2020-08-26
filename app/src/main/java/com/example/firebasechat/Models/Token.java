@@ -1,4 +1,4 @@
-package com.example.firebasechat.Notifications;
+package com.example.firebasechat.Models;
 
 public class Token {
 

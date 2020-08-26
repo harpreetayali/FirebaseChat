@@ -13,23 +13,21 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.firebasechat.Adapters.MessageAdapter;
-import com.example.firebasechat.Fragments.APIService;
+import com.example.firebasechat.Retrofit.APIService;
 import com.example.firebasechat.Models.Chat;
 import com.example.firebasechat.Models.User;
-import com.example.firebasechat.Notifications.Client;
-import com.example.firebasechat.Notifications.Data;
-import com.example.firebasechat.Notifications.MyResponse;
-import com.example.firebasechat.Notifications.Sender;
-import com.example.firebasechat.Notifications.Token;
+import com.example.firebasechat.Retrofit.Client;
+import com.example.firebasechat.Models.Data;
+import com.example.firebasechat.Models.MyResponse;
+import com.example.firebasechat.Models.Sender;
+import com.example.firebasechat.Models.Token;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -108,6 +106,7 @@ public class MessageActivity extends AppCompatActivity {
 
             if (!msg.equals("")) {
                 sendMessage(firebaseUser.getUid(), userId, msg);
+                Log.i("users", firebaseUser.getUid() + userId + msg);
             } else {
                 Toast.makeText(this, "You can't send empty message", Toast.LENGTH_SHORT).show();
             }
@@ -204,6 +203,7 @@ public class MessageActivity extends AppCompatActivity {
                 User user = snapshot.getValue(User.class);
                 if (notify) {
                     sendNotification(receiver, user.getUsername(), msg);
+                    Log.i("users1", receiver + user.getUsername() + msg);
 
                 }
 
@@ -224,18 +224,22 @@ public class MessageActivity extends AppCompatActivity {
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                for (DataSnapshot snapshot1 : snapshot.getChildren())
+                {
                     Token token = snapshot1.getValue(Token.class);
-                    Data data = new Data(firebaseUser.getUid(),R.mipmap.ic_launcher,username + ": " + msg, "New Message",  userId);
+                    Data data = new Data(firebaseUser.getUid(),String.valueOf(R.mipmap.ic_launcher),username + ": " + msg, "New Message",  userId);
 
-                    Sender sender = new Sender(data, token.getToken());
+                    Log.i("users2", firebaseUser.getUid()+" : " + username+" : "  + userId+" : "  + msg);
+                    Sender sender = new Sender(token.getToken(),data);
+
                     Log.i("senderror", "token: " + token.getToken());
+
                     apiService.sendNotification(sender)
                             .enqueue(new Callback<MyResponse>() {
                                 @Override
-                                public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
-
-
+                                public void onResponse(Call<MyResponse> call, Response<MyResponse> response)
+                                {
+                                    Log.i("users3", "token: " + response.body().getResults().get(0));
                                     if (response.code() == 200) {
                                         if (response.body().getSuccess() == 1) {
                                             Toast.makeText(MessageActivity.this, "Sent", Toast.LENGTH_SHORT).show();
@@ -246,7 +250,7 @@ public class MessageActivity extends AppCompatActivity {
                                 @Override
                                 public void onFailure(Call<MyResponse> call, Throwable t)
                                 {
-                                    Log.i("senderror", t.getMessage());
+                                    Log.i("senderrorSend", t.getMessage());
 
                                 }
                             });
