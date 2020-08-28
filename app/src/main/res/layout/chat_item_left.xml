@@ -30,5 +30,19 @@
         android:id="@+id/txt_seen"
         android:visibility="gone"/>
 
+    <ImageView
+        android:id="@+id/sent_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="fitXY"
+        android:layout_toEndOf="@id/profile_image" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_image_seen"
+        android:layout_below="@+id/show_msg"
+        android:visibility="gone"
+        android:layout_alignParentEnd="true"/>
 
 </RelativeLayout>

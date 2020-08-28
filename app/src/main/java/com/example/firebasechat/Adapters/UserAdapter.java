@@ -116,8 +116,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHolder>
 
     private void lastMessage(String userId, TextView last_msg) {
         theLastMessage = "default";
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Chats");
+        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Chats");
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override

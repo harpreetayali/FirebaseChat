@@ -6,18 +6,28 @@ public class Chat
     private String receiver;
     private String message;
     private boolean isseen;
+    private String imageURL;
 
 
-    public Chat(String sender, String receiver, String message,boolean isseen) {
+    public Chat(String sender, String receiver, String message,boolean isseen,String imageURL) {
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
         this.isseen = isseen;
+        this.imageURL = imageURL;
 
 
     }
 
     public Chat() {
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 
     public String getSender() {

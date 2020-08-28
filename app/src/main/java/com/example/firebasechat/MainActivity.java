@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.firebasechat.Adapters.UserAdapter;
 import com.example.firebasechat.Adapters.ViewPagerAdapter;
 import com.example.firebasechat.Fragments.ChatsFragment;
 import com.example.firebasechat.Fragments.ProfileFragment;

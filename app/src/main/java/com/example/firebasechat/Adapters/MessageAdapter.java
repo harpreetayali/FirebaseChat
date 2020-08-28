@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -54,20 +55,47 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
     public void onBindViewHolder(@NonNull MessageAdapter.MyViewHolder holder, int position) {
         Chat chat = mChat.get(position);
         holder.show_msg.setText(chat.getMessage());
-        if (imageUrl.equals("default")) {
-            holder.profile_image.setImageResource(R.mipmap.ic_launcher);
-        } else {
-            Glide.with(mCtx).load(imageUrl).into(holder.profile_image);
+
+
+        if (chat.getMessage().equals("Image")) {
+            Glide.with(mCtx).load(chat.getImageURL()).into(holder.sent_image);
+            holder.show_msg.setVisibility(View.GONE);
+        } else{
+            if (imageUrl.equals("default") && !chat.getMessage().equals("Image"))
+            {
+                holder.profile_image.setImageResource(R.mipmap.ic_launcher);
+            } else {
+                Glide.with(mCtx).load(imageUrl).into(holder.profile_image);
+                holder.sent_image.setVisibility(View.GONE);
+            }
         }
 
+
+
+
         if (position == mChat.size()-1) {
-            if (chat.isIsseen()) {
+            if (chat.isIsseen() && chat.getMessage().equals("Image"))
+            {
+                holder.txt_image_seen.setText("Seen");
+
+            } else if (chat.isIsseen()) {
                 holder.txt_seen.setText("Seen");
-            } else {
+                holder.txt_image_seen.setVisibility(View.GONE);
+                holder.sent_image.setVisibility(View.GONE);
+
+            } else if (!chat.isIsseen() && chat.getMessage().equals("Image")){
+                holder.txt_image_seen.setText("Delivered");
+
+            }
+            else{
                 holder.txt_seen.setText("Delivered");
+                holder.txt_image_seen.setVisibility(View.GONE);
+                holder.sent_image.setVisibility(View.GONE);
             }
         } else {
             holder.txt_seen.setVisibility(View.GONE);
+            holder.txt_image_seen.setVisibility(View.GONE);
+
         }
     }
 
@@ -79,7 +107,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView show_msg;
         public CircularImageView profile_image;
-        public TextView txt_seen;
+        public TextView txt_seen,txt_image_seen;
+        public ImageView sent_image;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -87,6 +116,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
             show_msg = itemView.findViewById(R.id.show_msg);
             profile_image = itemView.findViewById(R.id.profile_image);
             txt_seen = itemView.findViewById(R.id.txt_seen);
+            txt_image_seen = itemView.findViewById(R.id.txt_image_seen);
+            sent_image = itemView.findViewById(R.id.sent_image);
         }
     }
 
